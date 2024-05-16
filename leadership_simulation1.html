@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadership Challenge Simulation</title>
+<style>
+/* Add your CSS styles here */
+</style>
+</head>
+<body>
+<div id="scenario-container">
+  <h1>Welcome to the Leadership Challenge Simulation!</h1>
+  <p>In this simulation, you will face various leadership challenges. Your decisions will shape the outcome of each scenario, so choose wisely!</p>
+  <button onclick="startSimulation()">Start Simulation</button>
+</div>
+
+<div id="decision-container" style="display: none;">
+  <h2 id="scenario-title"></h2>
+  <p id="scenario-description"></p>
+  <button onclick="makeDecision(1)" id="option1"></button>
+  <button onclick="makeDecision(2)" id="option2"></button>
+  <button onclick="makeDecision(3)" id="option3"></button>
+</div>
+
+<div id="outcome-container" style="display: none;">
+  <h2>Outcome</h2>
+  <p id="outcome-text"></p>
+  <p>Your overall grade: <span id="final-grade"></span></p>
+  <button onclick="restartSimulation()">Restart Simulation</button>
+</div>
+
+<script>
+// Define scenario data
+var scenarios = [
+  {
+    title: "Team Conflict",
+    description: "You've just been assigned to lead a team on a critical project, but there's already tension among team members. How will you address the conflict and foster collaboration?",
+    options: [
+      "Call a team meeting to discuss the issues openly.",
+      "Meet with each team member individually to understand their perspectives.",
+      "Ignore the conflict and hope it resolves itself."
+    ]
+  },
+  {
+    title: "Decision Making Under Pressure",
+    description: "A sudden problem has arisen that threatens to derail your project timeline. You must make a quick decision to keep things on track.",
+    options: [
+      "Gather input from team members and make a collective decision.",
+      "Trust your instincts and make the decision without consulting others.",
+      "Delegate the decision-making to a trusted team member."
+    ]
+  },
+  // Add more scenarios here...
+];
+
+var currentScenarioIndex = 0;
+var grades = [];
+
+function startSimulation() {
+  document.getElementById('scenario-container').style.display = 'none';
+  document.getElementById('decision-container').style.display = 'block';
+  displayScenario();
+}
+
+function displayScenario() {
+  var currentScenario = scenarios[currentScenarioIndex];
+  document.getElementById('scenario-title').innerText = currentScenario.title;
+  document.getElementById('scenario-description').innerText = currentScenario.description;
+  document.getElementById('option1').innerText = currentScenario.options[0];
+  document.getElementById('option2').innerText = currentScenario.options[1];
+  document.getElementById('option3').innerText = currentScenario.options[2];
+}
+
+function makeDecision(option) {
+  var grade = Math.floor(Math.random() * 10) + 1; // Generate a random grade between 1 and 10
+  grades.push(grade);
+
+  currentScenarioIndex++;
+  if (currentScenarioIndex < scenarios.length) {
+    displayScenario();
+  } else {
+    showOutcome();
+  }
+}
+
+function showOutcome() {
+  document.getElementById('decision-container').style.display = 'none';
+  document.getElementById('outcome-container').style.display = 'block';
+
+  // Calculate final grade
+  var totalGrade = grades.reduce((acc, curr) => acc + curr, 0);
+  var finalGrade = totalGrade / grades.length;
+
+  // Display outcome
+  document.getElementById('outcome-text').innerText = "Congratulations! You've completed the simulation.";
+  document.getElementById('final-grade').innerText = finalGrade.toFixed(2);
+}
+
+function restartSimulation() {
+  currentScenarioIndex = 0;
+  grades = [];
+  document.getElementById('outcome-container').style.display = 'none';
+  document.getElementById('scenario-container').style.display = 'block';
+}
+</script>
+</body>
+</html>
